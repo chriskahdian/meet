@@ -66,7 +66,7 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
-  get AuthURL:
+  getAuthURL:
     handler: handler.getAuthURL
     events:
       - http:

@@ -25,6 +25,10 @@ const authUrl = oAuth2Client.generateAuthUrl({
 });
 
 module.exports.getAuthURL = async () => {
+  const authUrl = oAuth2Client.generateAuthUrl({
+    acces_type: "offline",
+    scope: SCOPES,
+  });
   return {
     statusCode: 200,
     headers: {
@@ -35,3 +39,9 @@ module.exports.getAuthURL = async () => {
     }),
   };
 };
+
+
+
+
+
+
