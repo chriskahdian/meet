@@ -53,7 +53,7 @@
     const resultLink = document.getElementById("authURL");
     // Replace this with your own endpoint
     const getAuthURL =
-      "https://uhaoyxh6x8.execute-api.us-west-1.amazonaws.com/dev/api/get-auth-url";
+      "https://m7iq9z42d6.execute-api.us-west-1.amazonaws.com/dev/api/get-auth-url";
 
     getURLElement.onclick = function () {
       fetch(getAuthURL)
@@ -75,7 +75,7 @@
     const getAccessToken = document.getElementById("getToken");
     const accessTokenElement = document.getElementById("accessToken");
     const getToken =
-      "https://uhaoyxh6x8.execute-api.us-west-1.amazonaws.com/dev/api/token/";
+      "https://m7iq9z42d6.execute-api.us-west-1.amazonaws.com/dev/api/token/";
     getAccessToken.onclick = function () {
       let code = codeValue.value;
       // if the authorization code is not URL-encoded, then URL-encode it.
@@ -95,7 +95,7 @@
     // --------------------- STEP 3
     const getEvents = document.getElementById("getEvents");
     const events = document.getElementById("events");
-    const getCalendarEvents = "https://uhaoyxh6x8.execute-api.us-west-1.amazonaws.com/dev/api/get-events/";
+    const getCalendarEvents = "https://m7iq9z42d6.execute-api.us-west-1.amazonaws.com/dev/api/get-events/";
 
     getEvents.onclick = function () {
     const { access_token } = JSON.parse(accessTokenElement.innerText);
@@ -108,7 +108,7 @@
         events.innerText = JSON.stringify(json, null, 2);
         });
     };
-    
+
   </script>
 
   </body>
