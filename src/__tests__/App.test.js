@@ -38,26 +38,44 @@ describe ('<App /> integration', () => {
     expect(AppWrapper.find(CitySearch).props().locations).toEqual(AppLocationsState);
     AppWrapper.unmount();
   });
-  test('get list of events matching the city selected by the user', async () => {
+  // test('get list of events matching the city selected by the user', async () => {
+  //   const AppWrapper = mount(<App />);
+  //   const CitySearchWrapper = AppWrapper.find(CitySearch);
+  //   const locations = extractLocations(mockData);
+  //   CitySearchWrapper.setState({ suggestions: locations });
+  //   const suggestions = CitySearchWrapper.state('suggestions');
+  //   const selectedIndex = Math.floor(Math.random() * (suggestions.length));
+  //   const selectedCity = suggestions[selectedIndex];
+  //   await CitySearchWrapper.instance().handleItemClicked(selectedCity);
+  //   const allEvents = await getEvents();
+  //   const eventsToShow = allEvents.filter(event => event.location === selectedCity);
+  //   expect(AppWrapper.state('events')).toEqual(eventsToShow);
+  //   AppWrapper.unmount();
+  // });
+  // test('get list of all events when user selects "See all cities"', async () => {
+  //   const AppWrapper = mount(<App />);
+  //   const suggestionItems = AppWrapper.find(CitySearch).find('.suggestions li');
+  //   await suggestionItems.at(suggestionItems.length - 1).simulate('click');
+  //   const allEvents = await getEvents();
+  //   expect(AppWrapper.state('events')).toEqual(allEvents);
+  //   AppWrapper.unmount();
+  // });
+  test('App passes "number of events" state as a prop to NumberOfEvents', () => {
     const AppWrapper = mount(<App />);
-    const CitySearchWrapper = AppWrapper.find(CitySearch);
-    const locations = extractLocations(mockData);
-    CitySearchWrapper.setState({ suggestions: locations });
-    const suggestions = CitySearchWrapper.state('suggestions');
-    const selectedIndex = Math.floor(Math.random() * (suggestions.length));
-    const selectedCity = suggestions[selectedIndex];
-    await CitySearchWrapper.instance().handleItemClicked(selectedCity);
-    const allEvents = await getEvents();
-    const eventsToShow = allEvents.filter(event => event.location === selectedCity);
-    expect(AppWrapper.state('events')).toEqual(eventsToShow);
+    const AppNumberOfEventsState = AppWrapper.state('numberOfEvents');
+    expect(AppWrapper.find(NumberOfEvents).props().numberOfEvents).toEqual(AppNumberOfEventsState);
     AppWrapper.unmount();
   });
-  test('get list of all events when user selects "See all cities"', async () => {
+  test('Update list of events when user changes number', () => {
     const AppWrapper = mount(<App />);
-    const suggestionItems = AppWrapper.find(CitySearch).find('.suggestions li');
-    await suggestionItems.at(suggestionItems.length - 1).simulate('click');
-    const allEvents = await getEvents();
-    expect(AppWrapper.state('events')).toEqual(allEvents);
+    const NumberOfEventsWrapper = AppWrapper.find(NumberOfEvents);
+    AppWrapper.instance().updateEvents = jest.fn();
+    AppWrapper.instance().forceUpdate();
+    NumberOfEventsWrapper.setState({ numberOfEvents: 32 });
+    const eventObject = { target: { value: 1 } };
+    NumberOfEventsWrapper.find('.numberInput').simulate('change', eventObject);
+    expect(NumberOfEventsWrapper.state('numberOfEvents')).toBe(1);
+    expect(AppWrapper.instance().updateEvents).toHaveBeenCalledWith(null, 1);
     AppWrapper.unmount();
   });
 });

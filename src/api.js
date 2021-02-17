@@ -2,8 +2,8 @@ import { mockData } from './mock-data';
 import NProgress from 'nprogress';
 import axios from 'axios';
 
-export const extractLocations = (events) => {
-    var extractLocations = events.map((event) => event.location);
+export const extractLocations = (items) => {
+    var extractLocations = (items || []).map((event) => event.location);
     var locations = [...new Set(extractLocations)];
     return locations;
 };
@@ -22,7 +22,7 @@ export const getEvents = async () => {
   NProgress.start();
   if (window.location.href.startsWith("http://localhost")) {
     NProgress.done();
-    return mockData;
+    return { mockData, locations: extractLocations(mockData) };
   }
   const token = await getAccessToken();
   if (token) {
@@ -30,14 +30,12 @@ export const getEvents = async () => {
     const url = `https://m7iq9z42d6.execute-api.us-west-1.amazonaws.com/dev/api/get-events/${token}`;
     const result = await axios.get(url);
     if (result.data) {
-      var locations = extractLocations(result.data.events);
-      console.log(result.data.events);
+      var locations = extractLocations(result.data.data.items);
       localStorage.setItem("lastEvents", JSON.stringify(result.data));
       localStorage.setItem("locations", JSON.stringify(locations));
     }
     NProgress.done();
-    console.log(result.data.events);
-    return result.data.events;
+    return { events: result.data.data.items, locations };
   }
 };
 

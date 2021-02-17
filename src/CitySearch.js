@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 
 class CitySearch extends Component {
     state = {
+        locations: this.props.locations,
         query: '',
-        suggestions: []
-    }
+        suggestions: [],
+        showSuggestions: false,
+    };
     handleInputChanged = (event) => {
         const value = event.target.value;
         const suggestions = this.props.locations.filter((location) => {
@@ -13,7 +15,7 @@ class CitySearch extends Component {
         this.setState({
             query: value,
             suggestions,
-            showSuggestions: false
+            showSuggestions: true
         });
     };
     handleItemClicked = (suggestion) => {
@@ -26,14 +28,34 @@ class CitySearch extends Component {
     render() {
         return (
             <div className="CitySearch">
+
                 <input
                     type="text"
                     className="city"
                     value={this.state.query}
                     onChange={this.handleInputChanged}
                     onFocus={() => { this.setState({ showSuggestions: true }) }}
+                    onBlur={() => { this.setState({ showSuggestions: false }) }}
                 />
-                <ul className="suggestions" style={this.state.showSuggestions ? {}: { display: 'none' }}>
+
+                <ul
+
+                    // EXAMPLE
+                    className={
+                        this.state.showSuggestions
+                        ? 'suggestions showSuggestions'
+                        : 'display-none'
+                    }
+
+                    // MINE
+                    // className="suggestions"
+                    // style={
+                    //     this.state.showSuggestions
+                    //     ? {}
+                    //     : { display: 'none' }
+                    // }
+
+                >
                     {this.state.suggestions.map((suggestion) => (
                         <li 
                             key={suggestion}
@@ -42,10 +64,13 @@ class CitySearch extends Component {
                             {suggestion}
                         </li>
                     ))}
+
                     <li onClick={() => this.handleItemClicked("all")}>
                         <b>See all cities</b>
                     </li>
+
                 </ul>
+
             </div>
         );
     }
