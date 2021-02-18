@@ -22,7 +22,7 @@ export const getEvents = async () => {
   NProgress.start();
   if (window.location.href.startsWith("http://localhost")) {
     NProgress.done();
-    return { mockData, locations: extractLocations(mockData) };
+    return { events: mockData, locations: extractLocations(mockData) };
   }
   const token = await getAccessToken();
   if (token) {

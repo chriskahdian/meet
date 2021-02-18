@@ -23,7 +23,7 @@ class CitySearch extends Component {
             query: suggestion,
             showSuggestions: false
         });
-        this.props.updateEvents(suggestion);
+        this.props.updateEvents(suggestion, undefined);
     };
     render() {
         return (
@@ -31,29 +31,29 @@ class CitySearch extends Component {
 
                 <input
                     type="text"
-                    className="city"
+                    className="city citySearchInput"
                     value={this.state.query}
                     onChange={this.handleInputChanged}
                     onFocus={() => { this.setState({ showSuggestions: true }) }}
-                    onBlur={() => { this.setState({ showSuggestions: false }) }}
+                    // onBlur={() => { this.setState({ showSuggestions: false }) }}
                 />
 
                 <ul
 
                     // EXAMPLE
-                    className={
-                        this.state.showSuggestions
-                        ? 'suggestions showSuggestions'
-                        : 'display-none'
-                    }
+                    // className={
+                    //     this.state.showSuggestions
+                    //     ? 'suggestions showSuggestions'
+                    //     : 'display-none'
+                    // }
 
                     // MINE
-                    // className="suggestions"
-                    // style={
-                    //     this.state.showSuggestions
-                    //     ? {}
-                    //     : { display: 'none' }
-                    // }
+                    className="suggestions"
+                    style={
+                        this.state.showSuggestions
+                        ? {}
+                        : { display: 'none' }
+                    }
 
                 >
                     {this.state.suggestions.map((suggestion) => (
