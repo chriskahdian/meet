@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { InfoAlert } from './Alert';
 
 class CitySearch extends Component {
     state = {
@@ -6,35 +7,49 @@ class CitySearch extends Component {
         query: '',
         suggestions: [],
         showSuggestions: false,
+        // infoText: ''
     };
     handleInputChanged = (event) => {
         const value = event.target.value;
+        // BELOW MAY BE A PROBLEM LINE (included in text 4.7 but wasn't present in mine)
+        this.setState({showSuggestions:true});
         const suggestions = this.props.locations.filter((location) => {
             return location.toUpperCase().indexOf(value.toUpperCase()) > -1;
         });
-        this.setState({
+        if (suggestions.length === 0) {
+          this.setState({
             query: value,
-            suggestions,
-            showSuggestions: true
-        });
+            infoText: 'Nothing, try another',
+          });
+        } else {
+            return this.setState({
+                query: value,
+                suggestions,
+                // BELOW MAY BE A PROBLEM LINE (included in mine but wasn't present in text 4.7)
+                showSuggestions: true,
+                infoText: ''
+            });
+        }
     };
     handleItemClicked = (suggestion) => {
         this.setState({
             query: suggestion,
-            showSuggestions: false
+            showSuggestions: false,
+            infoText: ''
         });
         this.props.updateEvents(suggestion, undefined);
     };
     render() {
         return (
             <div className="CitySearch">
-
+                <InfoAlert text={this.state.infoText} />
                 <input
                     type="text"
                     className="city citySearchInput"
                     value={this.state.query}
                     onChange={this.handleInputChanged}
                     onFocus={() => { this.setState({ showSuggestions: true }) }}
+                    placeholder="Search for a city"
                     // onBlur={() => { this.setState({ showSuggestions: false }) }}
                 />
 
